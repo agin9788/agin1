@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 关键：移动端视口适配 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>经典小游戏</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+        body{
+            font-family: Microsoft YaHei, sans-serif;
+            background:#f5f5f5;
+            font-size:16px;
+            /* 手机端去掉外边距 */
+            margin:0;
+            padding:10px;
+            min-height:100vh;
+        }
+        .container{
+            width:100%;
+            max-width:600px;
+            margin:0 auto;
+            background:white;
+            padding:18px 14px;
+            border-radius:10px;
+            box-shadow:0 0 8px rgba(0,0,0,0.1);
+        }
+        h2{
+            color:#2c3e50;
+            border-bottom:1px solid #eee;
+            padding-bottom:12px;
+            font-size:22px;
+            font-weight:600;
+            text-align:center;
+        }
+        ul{
+            list-style:none;
+        }
+        li{
+            margin:10px 0;
+        }
+        a{
+            display:block;
+            padding:16px 14px;
+            background:#2980b9;
+            color:#fff;
+            text-decoration:none;
+            border-radius:8px;
+            font-size:17px;
+            transition:0.2s;
+            text-align:center;
+            /* 增大点击区域 */
+            min-height:50px;
+            line-height:1.4;
+        }
+        a:hover{
+            background:#1abc9c;
+        }
+        .category-title{
+            color:#e67e22;
+            font-size:18px;
+            margin:20px 0 10px;
+            padding-left:8px;
+            border-left:4px solid #e67e22;
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🎯 经典小游戏 & 实用工具</h2>
+
+        <div class="category-title">休闲小游戏</div>
+        <ul>
+            <li><a href="超级俄罗斯.html">超级俄罗斯</a></li>
+            <li><a href="24点_自适应.html">24点_自适应</a></li>
+            <li><a href="贪吃蛇.html">贪吃蛇</a></li>
+            <li><a href="扫雷.html">经典扫雷</a></li>
+            <li><a href="五子棋.html">双人五子棋</a></li>
+        </ul>
+
+        <div class="category-title">实用工具</div>
+        <ul>
+            <li><a href="常用色表.html">常用色表</a></li>
+            <li><a href="颜色代码大全.html">颜色代码大全</a></li>
+            <li><a href="进制转换.html">进制转换工具</a></li>
+            <li><a href="单位换算.html">单位换算器</a></li>
+            <li><a href="科学计算器.html">科学计算器</a></li>
+        </ul>
+
+        <div class="category-title">益智小游戏</div>
+        <ul>
+            <li><a href="数独.html">数独闯关</a></li>
+            <li><a href="拼图.html">趣味拼图</a></li>
+            <li><a href="连连看.html">经典连连看</a></li>
+        </ul>
+    </div>
+</body>
+</html>

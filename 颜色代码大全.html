@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<!-- 核心：添加视口适配标签 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>常用颜色大全 - 点击复制</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+  body{
+    background:#f7f7f7;
+    padding: 12px; /* 竖屏减少左右内边距 */
+    min-height: 100vh; /* 占满竖屏高度 */
+  }
+  .wrap{
+    max-width: 100%; /* 竖屏取消最大宽度限制，适配屏幕宽度 */
+    margin:0 auto;
+  }
+  h1{
+    text-align:center;
+    margin-bottom:8px;
+    font-size: 20px; /* 竖屏缩小标题字号 */
+    font-weight: 600;
+  }
+  .info{
+    text-align:center;
+    color:#666;
+    margin-bottom: 16px; /* 竖屏减少间距 */
+    font-size: 14px; /* 适配移动端字号 */
+  }
+  .grid{
+    display:grid;
+    /* 竖屏优化：列数自适应，最小宽度调整为80px更适配手机 */
+    grid-template-columns:repeat(auto-fill,minmax(80px,1fr));
+    gap: 6px; /* 竖屏缩小间距 */
+  }
+  .color{
+    height: 80px; /* 竖屏缩小色块高度，适配手机屏幕 */
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    cursor:pointer;
+    box-shadow:0 1px 4px rgba(0,0,0,.1);
+    user-select:none;
+    /* 增加触摸反馈 */
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.2s ease;
+  }
+  /* 触摸按压效果 */
+  .color:active{
+    transform: scale(0.95);
+  }
+  .hex{
+    color:#fff;
+    font-weight:bold;
+    text-shadow:0 0 3px #000;
+    font-size: 14px; /* 竖屏缩小色值字号 */
+  }
+  .tip{
+    position:fixed;
+    top: 12px; /* 竖屏调整提示框位置 */
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(0,0,0,0.8); /* 半透更友好 */
+    color:#fff;
+    padding: 8px 12px; /* 竖屏调整内边距 */
+    border-radius:6px;
+    opacity:0;
+    transition:.3s;
+    font-size: 14px; /* 适配移动端字号 */
+    z-index: 9999; /* 确保提示框在最上层 */
+    /* 适配刘海屏/底部安全区 */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    top: env(safe-area-inset-top, 12px);
+  }
+  .tip.show{
+    opacity:1;
+  }
+
+  /* 竖屏特殊适配：小屏手机（如4寸）进一步优化 */
+  @media screen and (max-width: 375px) {
+    .grid{
+      grid-template-columns:repeat(auto-fill,minmax(70px,1fr));
+    }
+    .color{
+      height: 70px;
+    }
+    .hex{
+      font-size: 12px;
+    }
+  }
+
+  /* 横屏兼容（可选）：保留横屏时的适配 */
+  @media screen and (orientation: landscape) {
+    .grid{
+      grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+    }
+    .color{
+      height: 100px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>常用颜色大全</h1>
+  <p class="info">点击色块复制颜色值</p>
+  <div class="grid" id="colorBox"></div>
+  <div class="tip" id="tip"></div>
+</div>
+
+<script>
+const colors = [
+  '#000000','#111111','#222222','#333333','#444444','#555555','#666666','#777777','#888888','#999999','#aaaaaa','#bbbbbb','#cccccc','#dddddd','#eeeeee','#ffffff',
+  '#ff0000','#ff3300','#ff6600','#ff9900','#ffcc00','#ffff00','#ccff00','#99ff00','#66ff00','#33ff00','#00ff00','#00ff33','#00ff66','#00ff99','#00ffcc','#00ffff',
+  '#00ccff','#0099ff','#0066ff','#0033ff','#0000ff','#3300ff','#6600ff','#9900ff','#cc00ff','#ff00ff','#ff00cc','#ff0099','#ff0066','#ff0033',
+  '#8B0000','#DC143C','#B22222','#CD5C5C','#F08080','#E9967A','#FA8072','#FFA07A','#FF4500','#FF8C00','#FFD700','#FFA500','#F0E68C','#9ACD32','#32CD32','#228B22',
+  '#008080','#00CED1','#4682B4','#1E90FF','#4169E1','#8A2BE2','#9400D3','#C71585','#DB7093','#F08080','#BC8F8F','#D2B48C','#F5DEB3','#DEB887','#DAA520','#CD853F',
+  '#A0522D','#8B4513','#708090','#778899','#2F4F4F','#000080','#00008B','#483D8B','#191970','#00000000','#FFFFFF00',
+  '#000000','#330000','#660000','#990000','#CC0000','#FF0000','#003300','#333300','#663300','#993300','#CC3300','#FF3300',
+  '#006600','#336600','#666600','#996600','#CC6600','#FF6600','#009900','#339900','#669900','#999900','#CC9900','#FF9900',
+  '#00CC00','#33CC00','#66CC00','#99CC00','#CCCC00','#FFCC00','#00FF00','#33FF00','#66FF00','#99FF00','#CCFF00','#FFFF00',
+  '#000033','#330033','#660033','#990033','#CC0033','#FF0033','#003333','#333333','#663333','#993333','#CC3333','#FF3333',
+  '#006633','#336633','#666633','#996633','#CC6633','#FF6633','#009933','#339933','#669933','#999933','#CC9933','#FF9933',
+  '#00CC33','#33CC33','#66CC33','#99CC33','#CCCC33','#FFCC33','#00FF33','#33FF33','#66FF33','#99FF33','#CCFF33','#FFFF33',
+  '#000066','#330066','#660066','#990066','#CC0066','#FF0066','#003366','#333366','#663366','#993366','#CC3366','#FF3366',
+  '#006666','#336666','#666666','#996666','#CC6666','#FF6666','#009966','#339966','#669966','#999966','#CC9966','#FF9966',
+  '#00CC66','#33CC66','#66CC66','#99CC66','#CCCC66','#FFCC66','#00FF66','#33FF66','#66FF66','#99FF66','#CCFF66','#FFFF66',
+  '#000099','#330099','#660099','#990099','#CC0099','#FF0099','#003399','#333399','#663399','#993399','#CC3399','#FF3399',
+  '#006699','#336699','#666699','#996699','#CC6699','#FF6699','#009999','#339999','#669999','#999999','#CC9999','#FF9999',
+  '#00CC99','#33CC99','#66CC99','#99CC99','#CCCC99','#FFCC99','#00FF99','#33FF99','#66FF99','#99FF99','#CCFF99','#FFFF99',
+  '#0000CC','#3300CC','#6600CC','#9900CC','#CC00CC','#FF00CC','#0033CC','#3333CC','#6633CC','#9933CC','#CC33CC','#FF33CC',
+  '#0066CC','#3366CC','#6666CC','#9966CC','#CC66CC','#FF66CC','#0099CC','#3399CC','#6699CC','#9999CC','#CC99CC','#FF99CC',
+  '#00CCCC','#33CCCC','#66CCCC','#99CCCC','#CCCCCC','#FFCCCC','#00FFCC','#33FFCC','#66FFCC','#99FFCC','#CCFFCC','#FFFFCC',
+  '#0000FF','#3300FF','#6600FF','#9900FF','#CC00FF','#FF00FF','#0033FF','#3333FF','#6633FF','#9933FF','#CC33FF','#FF33FF',
+  '#0066FF','#3366FF','#6666FF','#9966FF','#CC66FF','#FF66FF','#0099FF','#3399FF','#6699FF','#9999FF','#CC99FF','#FF99FF',
+  '#00CCFF','#33CCFF','#66CCFF','#99CCFF','#CCCCFF','#FFCCFF','#00FFFF','#33FFFF','#66FFFF','#99FFFF','#CCFFFF','#FFFFFF'
+];
+
+const box = document.getElementById('colorBox');
+const tip = document.getElementById('tip');
+
+// 优化复制逻辑：兼容移动端剪贴板API
+const copyToClipboard = (text) => {
+  // 优先使用新版剪贴板API
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text).then(() => true).catch(() => fallbackCopy(text));
+  } else {
+    return fallbackCopy(text);
+  }
+};
+
+// 兼容旧版复制方法
+const fallbackCopy = (text) => {
+  const input = document.createElement('textarea');
+  input.value = text;
+  // 隐藏textarea避免闪屏
+  input.style.position = 'absolute';
+  input.style.opacity = 0;
+  input.style.zIndex = -9999;
+  document.body.appendChild(input);
+  input.select();
+  try {
+    const success = document.execCommand('copy');
+    return success;
+  } catch (e) {
+    console.error('复制失败:', e);
+    return false;
+  } finally {
+    document.body.removeChild(input);
+  }
+};
+
+colors.forEach(c => {
+  const div = document.createElement('div');
+  div.className = 'color';
+  div.style.background = c;
+  div.innerHTML = `<span class="hex">${c}</span>`;
+  
+  // 移动端触摸事件兼容
+  div.addEventListener('click', async () => {
+    const success = await copyToClipboard(c);
+    if (success) {
+      tip.textContent = '已复制：' + c;
+      tip.classList.add('show');
+      setTimeout(() => tip.classList.remove('show'), 3000); // 缩短提示时间，适配移动端
+    } else {
+      tip.textContent = '复制失败，请手动复制';
+      tip.classList.add('show');
+      setTimeout(() => tip.classList.remove('show'), 2000);
+    }
+  });
+  
+  // 移动端触摸反馈（可选）
+  div.addEventListener('touchstart', () => {
+    div.style.opacity = 0.8;
+  });
+  div.addEventListener('touchend', () => {
+    div.style.opacity = 1;
+  });
+  
+  box.appendChild(div);
+});
+</script>
+</body>
+</html>
