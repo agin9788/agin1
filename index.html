@@ -2,106 +2,957 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 关键：移动端视口适配 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>经典小游戏</title>
+    <title>量子空间 - 科技未来游戏工具集</title>
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
+        /* 基础重置与全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        body{
-            font-family: Microsoft YaHei, sans-serif;
-            background:#f0f2f5;  /* 页面整体背景色 */
-            font-size:16px;
-            margin:0;
-            padding:10px;
-            min-height:100vh;
+        
+        body {
+            font-family: 'Orbitron', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            background: #0a0a14;
+            color: #e0e0ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
-        .container{
-            width:100%;
-            max-width:600px;
-            margin:0 auto;
-            background:#ffffff;
-            padding:18px 14px;
-            border-radius:10px;
-            box-shadow:0 0 8px rgba(0,0,0,0.1);
+        
+        /* 动态粒子背景 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            top: 0;
+            left: 0;
         }
-        /* 顶部大标题 文字大小+颜色 */
-        h2{
-            color:#1a202c;       /* 标题字体颜色 */
-            border-bottom:1px solid #eee;
-            padding-bottom:12px;
-            font-size:24px;        /* 标题字号 */
-            font-weight:700;
-            text-align:center;
+        
+        /* 主容器 - 科技感玻璃态，增加顶部安全区域 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px 30px 15px;  /* 增加底部内边距 */
+            position: relative;
+            z-index: 1;
         }
-        ul{
-            list-style:none;
+        
+        /* 全息投影效果边框 */
+        .hologram-border {
+            position: relative;
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: 
+                0 0 60px rgba(0, 255, 255, 0.1),
+                0 0 120px rgba(0, 150, 255, 0.05),
+                inset 0 0 100px rgba(0, 100, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.2);
         }
-        li{
-            margin:10px 0;
+        
+        .hologram-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 255, 0.5), 
+                rgba(0, 100, 255, 0.5), 
+                rgba(150, 0, 255, 0.5));
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: hologramGlow 8s linear infinite;
+            pointer-events: none;
         }
-        /* 功能按钮：背景色、文字颜色、字号 */
-        a{
-            display:block;
-            padding:16px 14px;
-            background:#1677ff;     /* 按钮默认背景色 */
-            color:#ffffff;          /* 按钮文字颜色 */
-            text-decoration:none;
-            border-radius:8px;
-            font-size:18px;           /* 按钮文字大小 */
-            transition:0.2s;
-            text-align:center;
-            min-height:50px;
-            line-height:1.4;
-            font-weight:500;
+        
+        @keyframes hologramGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
-        a:hover{
-            background:#CC33FF;     /* 按钮悬浮背景色 */
+        
+        /* 科技感标题 - 控制下边距防止遮挡下方按钮 */
+        .main-title {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 5px; /* 减少下边距 */
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            word-break: keep-all;
         }
-        /* 分类标题：字号、字体色、左侧条、背景 */
-        .category-title{
-            color:#d32f2f;          /* 分类标题文字颜色 */
-            font-size:20px;           /* 分类标题字号 */
-            margin:20px 0 10px;
-            padding:8px 12px;
-            border-left:5px solid #d32f2f; /* 左侧彩色竖线 */
-            font-weight:bold;
-            background:#fff5f5;     /* 分类标题背景色 */
-            border-radius:4px;
+        
+        .main-title .tech-text {
+            background: linear-gradient(90deg, 
+                #00ffff, 
+                #0080ff, 
+                #a100ff, 
+                #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 100%;
+            animation: techTextGlow 6s ease-in-out infinite;
+            text-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.3),
+                0 0 40px rgba(0, 100, 255, 0.2);
+        }
+        
+        @keyframes techTextGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #00ffff, 
+                #a100ff, 
+                transparent);
+            filter: blur(1px);
+        }
+        
+        /* 副标题 */
+        .subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: #a0c8ff;
+            letter-spacing: 2px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        /* 标签导航 - 大幅增加与标题的间距，使用margin-top确保不被遮挡 */
+        .tabs-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 35px 0 35px;  /* 显著增加上边距，确保按钮不会被标题悬停效果或装饰线遮挡 */
+            position: relative;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 5px 0 10px 0;  /* 给滚动条留出空间，确保按钮完全可见 */
+            scrollbar-width: thin;
+        }
+        
+        /* 美化滚动条但保留功能性 */
+        .tabs-nav::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .tabs-nav::-webkit-scrollbar-track {
+            background: rgba(0, 20, 40, 0.5);
+            border-radius: 4px;
+        }
+        
+        .tabs-nav::-webkit-scrollbar-thumb {
+            background: #00ffff;
+            border-radius: 4px;
+        }
+        
+        .tab-button {
+            flex: 0 0 auto;
+            padding: 14px 24px;
+            background: rgba(0, 20, 40, 0.7);
+            border: none;
+            border-radius: 40px;  /* 圆角胶囊风格更现代 */
+            font-size: 1rem;
+            font-weight: 600;
+            color: #a0c8ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 150, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 100, 255, 0.1);
+            white-space: nowrap;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0, 255, 255, 0.2), 
+                transparent);
+            transition: 0.5s;
+        }
+        
+        .tab-button:hover {
+            transform: translateY(-3px) scale(1.03);
+            color: #00ffff;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 255, 0.3),
+                0 0 60px rgba(0, 100, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.6);
+        }
+        
+        .tab-button:hover::before {
+            left: 100%;
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, 
+                rgba(0, 120, 255, 0.9), 
+                rgba(100, 0, 255, 0.9));
+            color: #ffffff;
+            box-shadow: 
+                0 0 25px rgba(0, 200, 255, 0.5),
+                0 0 45px rgba(100, 0, 255, 0.3);
+            border-color: rgba(0, 255, 255, 0.9);
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        
+        .tab-icon {
+            margin-right: 6px;
+            font-size: 1.1rem;
+        }
+        
+        /* 内容区域 */
+        .tab-content {
+            display: none;
+            animation: contentFadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes contentFadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) perspective(1000px) rotateX(5deg);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) perspective(1000px) rotateX(0);
+            }
+        }
+        
+        /* 分类标题 - 添加光变效果 */
+        .category-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            background: rgba(0, 20, 40, 0.4);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 150, 255, 0.2);
+            box-shadow: 
+                inset 0 0 20px rgba(0, 100, 255, 0.1),
+                0 0 20px rgba(0, 255, 255, 0.1);
+        }
+        
+        .category-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                #00ffff, 
+                #0080ff, 
+                #a100ff);
+        }
+        
+        .category-title span {
+            background: linear-gradient(90deg, 
+                #00ffff, 
+                #0080ff, 
+                #a100ff, 
+                #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 100%;
+            animation: techTextGlow 6s ease-in-out infinite;
+            text-shadow: 
+                0 0 15px rgba(0, 255, 255, 0.3),
+                0 0 30px rgba(0, 100, 255, 0.2);
+        }
+        
+        /* 内容网格 - 数据面板 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            perspective: 1000px;
+        }
+        
+        /* 内容卡片 - 未来感数据卡 */
+        .content-card {
+            position: relative;
+            padding: 22px 18px;
+            background: rgba(0, 20, 40, 0.6);
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            display: block;
+            cursor: pointer;
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                #00ffff, 
+                #0080ff, 
+                #a100ff);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.4),
+                0 0 25px rgba(0, 200, 255, 0.4);
+            border-color: rgba(0, 255, 255, 0.6);
+            background: rgba(0, 30, 50, 0.7);
+        }
+        
+        .content-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .content-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(0, 255, 255, 0.08) 50%, 
+                transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .content-card:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-icon {
+            font-size: 1.5rem;
+        }
+        
+        .card-desc {
+            font-size: 0.85rem;
+            color: #b0d4ff;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+        
+        .card-status {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00ffaa;
+            box-shadow: 0 0 8px #00ffaa;
+            animation: statusPulse 2s infinite;
+        }
+        
+        @keyframes statusPulse {
+            0%, 100% { 
+                opacity: 0.6; 
+                box-shadow: 0 0 4px #00ffaa;
+            }
+            50% { 
+                opacity: 1; 
+                box-shadow: 0 0 14px #00ffaa;
+            }
+        }
+        
+        /* 页脚 - 全息终端界面（青蓝渐变文字） */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 18px 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            background: linear-gradient(90deg, 
+                #00ffff,    
+                #0080ff,    
+                #a100ff,    
+                #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 100%;
+            animation: textGradient 8s linear infinite;
+            background-color: rgba(0, 20, 40, 0.5);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.15),
+                inset 0 0 15px rgba(0, 100, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(6px);
+        }
+        
+        @keyframes textGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+        
+        .footer::before {
+            content: '>';
+            position: absolute;
+            left: 20px;
+            color: #00ffff;
+            animation: cursorBlink 1s infinite;
+            text-shadow: 0 0 8px #00ffff;
+            font-weight: bold;
+        }
+        
+        @keyframes cursorBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .footer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #00ffff, 
+                #0080ff, 
+                transparent);
+            filter: blur(1px);
+        }
+        
+        /* 扫描线效果 */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 0, 0.02) 50%
+            );
+            background-size: 100% 4px;
+            animation: scanlinesMove 20s linear infinite;
+        }
+        
+        @keyframes scanlinesMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100%); }
+        }
+        
+        /* ========= 响应式设计：彻底解决移动端按钮遮挡问题 ========= */
+        @media (max-width: 1024px) {
+            .main-title {
+                font-size: 2.4rem;
+                margin-bottom: 5px;
+            }
+            .subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+            .tabs-nav {
+                margin: 30px 0 30px;
+                gap: 12px;
+            }
+            .tab-button {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px 12px 20px 12px;
+            }
+            .hologram-border {
+                padding: 18px 15px;
+            }
+            .main-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+                margin-bottom: 4px;
+            }
+            .main-title::after {
+                width: 120px;
+                height: 2px;
+                bottom: -6px;
+            }
+            .subtitle {
+                font-size: 0.8rem;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            /* 关键：增加按钮区域上边距，彻底避免遮盖 */
+            .tabs-nav {
+                margin: 35px 0 25px;
+                gap: 10px;
+                padding: 4px 2px 12px 2px;
+            }
+            .tab-button {
+                padding: 10px 18px;
+                font-size: 0.85rem;
+                border-radius: 36px;
+            }
+            .tab-icon {
+                font-size: 1rem;
+                margin-right: 4px;
+            }
+            .category-title {
+                font-size: 1.5rem;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .content-card {
+                padding: 18px;
+            }
+            .card-title {
+                font-size: 1.15rem;
+            }
+            .footer {
+                margin-top: 40px;
+                padding: 14px 12px;
+                font-size: 0.75rem;
+            }
+            .footer::before {
+                left: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px 10px 15px 10px;
+            }
+            .hologram-border {
+                padding: 15px 12px;
+                border-radius: 18px;
+            }
+            .main-title {
+                font-size: 1.7rem;
+                letter-spacing: 1px;
+                margin-bottom: 2px;
+            }
+            .main-title .tech-text {
+                display: inline-block;
+            }
+            .main-title::after {
+                width: 100px;
+                bottom: -5px;
+            }
+            .subtitle {
+                font-size: 0.7rem;
+                margin-bottom: 8px;
+                margin-top: 8px;
+            }
+            /* 手机小屏核心: 确保标签按钮组有足够空间展示 */
+            .tabs-nav {
+                margin: 30px 0 22px;
+                gap: 8px;
+                padding-bottom: 12px;
+            }
+            .tab-button {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                border-radius: 30px;
+            }
+            .tab-icon {
+                margin-right: 3px;
+                font-size: 0.9rem;
+            }
+            .category-title {
+                font-size: 1.3rem;
+                padding: 10px 12px;
+                margin-bottom: 18px;
+            }
+            .category-title span {
+                font-size: 1.2rem;
+            }
+            .content-card {
+                padding: 16px;
+            }
+            .card-title {
+                font-size: 1.05rem;
+                gap: 6px;
+            }
+            .card-icon {
+                font-size: 1.3rem;
+            }
+            .footer {
+                font-size: 0.7rem;
+                padding: 12px 10px;
+                margin-top: 35px;
+            }
+            .footer::before {
+                left: 10px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 375px) {
+            .main-title {
+                font-size: 1.5rem;
+            }
+            .subtitle {
+                font-size: 0.65rem;
+                letter-spacing: 1px;
+            }
+            .tabs-nav {
+                margin: 28px 0 18px;
+                gap: 6px;
+            }
+            .tab-button {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+                min-width: auto;
+            }
+            .category-title {
+                font-size: 1.2rem;
+                padding: 8px 10px;
+            }
+            .card-desc {
+                font-size: 0.78rem;
+            }
+        }
+        
+        /* 全息提示框样式 */
+        .hologram-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 20, 40, 0.95);
+            backdrop-filter: blur(16px);
+            padding: 28px 24px;
+            border-radius: 24px;
+            border: 2px solid rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 60px rgba(0, 255, 255, 0.4), 0 20px 35px rgba(0,0,0,0.5);
+            z-index: 10000;
+            color: #00ffff;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            min-width: 300px;
+            max-width: 90%;
+            animation: hologramAppear 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        
+        @keyframes hologramAppear {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.85);
+                filter: blur(4px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1);
+                filter: blur(0);
+            }
+        }
+        
+        @keyframes hologramDisappear {
+            from { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1);
+            }
+            to { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.9);
+                filter: blur(2px);
+            }
         }
     </style>
+    
+    <!-- 导入科幻字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- 粒子效果库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </head>
 <body>
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
+    
+    <!-- CRT扫描线效果 -->
+    <div class="scanlines"></div>
+    
+    <!-- 主容器 -->
     <div class="container">
-        <h2>经典小游戏 & 实用工具</h2>
-
-        <div class="category-title">休闲小游戏</div>
-        <ul>
-            <li><a href="超级俄罗斯.html">超级俄罗斯</a></li>
-            <li><a href="24点_自适应.html">24点_自适应</a></li>
-            <li><a href="暂无.html">开发预留</a></li>
-            <li><a href="扫雷.html">经典扫雷</a></li>
-            <li><a href="五子棋.html">双人五子棋</a></li>
-        </ul>
-
-        <div class="category-title">实用工具</div>
-        <ul>
-            <li><a href="常用色表.html">常用色表</a></li>
-            <li><a href="颜色代码大全.html">颜色代码大全</a></li>
-            <li><a href="进制转换.html">进制转换工具</a></li>
-            <li><a href="单位换算.html">单位换算器</a></li>
-            <li><a href="播放器.html">本地音乐播放器</a></li>
-        </ul>
-
-        <div class="category-title">益智小游戏</div>
-        <ul>
-            <li><a href="数独.html">数独闯关</a></li>
-            <li><a href="拼图.html">趣味拼图</a></li>
-            <li><a href="连连看.html">经典连连看</a></li>
-        </ul>
+        <div class="hologram-border">
+            <!-- 科技感标题 -->
+            <h1 class="main-title">
+                <span class="tech-text">量子空间</span>
+            </h1>
+            <div class="subtitle">
+                <span>⚡ 经典小游戏与实用工具 | 全息交互矩阵 ⚡</span>
+            </div>
+            
+            <!-- 标签导航 - 已显著增加上边距，确保不会被标题装饰遮挡 -->
+            <div class="tabs-nav">
+                <button class="tab-button active" data-tab="tab1">
+                    <span class="tab-icon">🎮</span> 游戏矩阵
+                </button>
+                <button class="tab-button" data-tab="tab2">
+                    <span class="tab-icon">⚙️</span> 工具面板
+                </button>
+                <button class="tab-button" data-tab="tab3">
+                    <span class="tab-icon">🧠</span> 智械核心
+                </button>
+            </div>
+            
+            <!-- 游戏内容页 -->
+            <div class="tab-content active" id="tab1">
+                <div class="category-title">
+                    <span>游戏矩阵</span> | 娱乐系统
+                </div>
+                <div class="content-grid">
+                    <a href="超级俄罗斯.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🔷</span> 俄罗斯方块</h3><p class="card-desc">量子方块游戏，挑战你的空间思维能力</p></div></a>
+                    <a href="连连看.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🍒</span> 视觉匹配</h3><p class="card-desc">增强现实连连看，训练你的模式识别能力</p></div></a>
+                    <a href="星际3战机.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">◼️</span> 闪电出击</h3><p class="card-desc">经典飞机大战，优化你的决策速度</p></div></a>
+                    <a href="跳跃恐龙.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🦕</span> 时空跳跃</h3><p class="card-desc">控制恐龙穿越障碍，测试你的反应时间</p></div></a>
+                    <a href="星际战机.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🚀</span> 星际战机</h3><p class="card-desc">太空射击游戏，体验宇宙战斗的刺激</p></div></a>
+                </div>
+            </div>
+            
+            <!-- 工具内容页 -->
+            <div class="tab-content" id="tab2">
+                <div class="category-title"><span>工具面板</span> | 实用系统</div>
+                <div class="content-grid">
+                    <a href="常用色表.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🎨</span> 色彩光谱</h3><p class="card-desc">常用颜色表，设计师的色彩数据库</p></div></a>
+                    <a href="颜色代码表.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🌈</span> 色码全息</h3><p class="card-desc">完整的颜色代码库，支持多种格式</p></div></a>
+                    <a href="进制转换.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🔢</span> 进制转换器</h3><p class="card-desc">支持二进制、十进制、十六进制转换</p></div></a>
+                    <a href="单位换算.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">📏</span> 量子换算</h3><p class="card-desc">单位换算工具，覆盖所有物理量</p></div></a>
+                    <a href="播放器.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🎵</span> 声波引擎</h3><p class="card-desc">音乐播放器，支持多种音频格式</p></div></a>
+                </div>
+            </div>
+            
+            <!-- 益智内容页 -->
+            <div class="tab-content" id="tab3">
+                <div class="category-title"><span>智械核心</span> | 训练系统</div>
+                <div class="content-grid">
+                    <a href="数独.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">9️⃣</span> 数字矩阵</h3><p class="card-desc">数独游戏，锻炼你的逻辑推理能力</p></div></a>
+                    <a href="24点.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">♠️</span> 24点运算</h3><p class="card-desc">数字运算游戏，挑战你的心算速度</p></div></a>
+                    <a href="连连看.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🔄</span> 模式识别</h3><p class="card-desc">经典连连看，增强视觉匹配能力</p></div></a>
+                    <a href="推箱子.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">📦</span> 空间推演</h3><p class="card-desc">推箱子游戏，训练你的路径规划能力</p></div></a>
+                    <a href=".html" class="content-card dev-module"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">⚡</span> 神经训练</h3><p class="card-desc">多种益智游戏，全面提升认知能力</p></div></a>
+                </div>
+            </div>
+            
+            <!-- 页脚 青蓝渐变 -->
+            <div class="footer">
+                <span id="terminal-text">量子空间系统已就绪 | 版本 2.5.0 | 全息界面在线</span>
+            </div>
+        </div>
     </div>
+    
+    <script>
+        // 初始化粒子背景
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS("particles-js", {
+                    particles: {
+                        number: { value: 70, density: { enable: true, value_area: 900 } },
+                        color: { value: ["#00ffff", "#0080ff", "#a100ff"] },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.5, random: true },
+                        size: { value: 2.5, random: true },
+                        line_linked: {
+                            enable: true,
+                            distance: 130,
+                            color: "#00ffff",
+                            opacity: 0.25,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 1.6,
+                            direction: "none",
+                            random: true,
+                            out_mode: "out"
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "repulse" },
+                            onclick: { enable: true, mode: "push" }
+                        }
+                    },
+                    retina_detect: true
+                });
+            }
+            
+            // 终端打字效果
+            const terminalSpan = document.getElementById('terminal-text');
+            if(terminalSpan) {
+                const finalText = terminalSpan.textContent;
+                terminalSpan.textContent = '';
+                let idx = 0;
+                function typeNext() {
+                    if(idx < finalText.length) {
+                        terminalSpan.textContent += finalText.charAt(idx);
+                        idx++;
+                        setTimeout(typeNext, 45);
+                    } else {
+                        setInterval(() => {
+                            terminalSpan.style.opacity = terminalSpan.style.opacity === '0.6' ? '1' : '0.6';
+                        }, 900);
+                    }
+                }
+                setTimeout(typeNext, 400);
+            }
+        });
+        
+        // 标签切换（修复被遮挡问题已经调整CSS间距）
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // 清脆提示音（无声音频上下文可选，静默处理但保留效果）
+                const tabId = button.getAttribute('data-tab');
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                const activePanel = document.getElementById(tabId);
+                if(activePanel) activePanel.classList.add('active');
+                
+                // 轻微滚动确保按钮完全可见（无遮挡体验优化）
+                if(button && window.innerWidth <= 768) {
+                    button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            });
+        });
+        
+        // 处理开发中的模块
+        document.querySelectorAll('.content-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const href = card.getAttribute('href');
+                if(href === '.html' || (card.classList && card.classList.contains('dev-module'))) {
+                    e.preventDefault();
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'hologram-alert';
+                    alertDiv.innerHTML = `
+                        <h3 style="margin-bottom: 16px; font-size: 1.4rem;">⚡ 系统提示</h3>
+                        <p style="margin-bottom: 24px; color: #b8e2ff;">量子协议：此模块正在高维开发中，请期待下一次跃迁更新！</p>
+                        <button id="closeHoloAlert" style="
+                            background: linear-gradient(135deg, #00aaff, #0066cc);
+                            border: none;
+                            padding: 10px 28px;
+                            border-radius: 40px;
+                            color: white;
+                            font-family: 'Orbitron', sans-serif;
+                            font-weight: bold;
+                            cursor: pointer;
+                            font-size: 0.9rem;
+                            box-shadow: 0 0 12px #00ccff;
+                        ">确 认</button>
+                    `;
+                    document.body.appendChild(alertDiv);
+                    const closeBtn = document.getElementById('closeHoloAlert');
+                    if(closeBtn) {
+                        closeBtn.addEventListener('click', () => {
+                            alertDiv.style.animation = 'hologramDisappear 0.3s forwards';
+                            setTimeout(() => alertDiv.remove(), 350);
+                        });
+                    }
+                    // 点击背景遮罩关闭
+                    alertDiv.addEventListener('click', (e2) => {
+                        if(e2.target === alertDiv) {
+                            alertDiv.style.animation = 'hologramDisappear 0.3s forwards';
+                            setTimeout(() => alertDiv.remove(), 350);
+                        }
+                    });
+                    return false;
+                }
+                // 正常链接无特殊处理
+            });
+        });
+        
+        // 页面进场动效
+        window.addEventListener('load', () => {
+            document.querySelector('.container').style.opacity = '0';
+            document.querySelector('.container').style.transform = 'translateY(18px)';
+            setTimeout(() => {
+                document.querySelector('.container').style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                document.querySelector('.container').style.opacity = '1';
+                document.querySelector('.container').style.transform = 'translateY(0)';
+            }, 150);
+        });
+    </script>
 </body>
 </html>
