@@ -3,956 +3,652 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>量子空间 - 科技未来游戏工具集</title>
+    <title>游戏工具合集</title>
     <style>
-        /* 基础重置与全局样式 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
-        
+
         body {
-            font-family: 'Orbitron', 'Microsoft YaHei', 'Segoe UI', sans-serif;
-            background: #0a0a14;
-            color: #e0e0ff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(145deg, #0b1120 0%, #0a0f1a 100%);
             min-height: 100vh;
+            padding: 20px 12px;
             overflow-x: hidden;
             position: relative;
         }
-        
-        /* 动态粒子背景 */
-        #particles-js {
+
+        /* 机械氛围网格纹理 */
+        body::before {
+            content: "";
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            top: 0;
-            left: 0;
-        }
-        
-        /* 主容器 - 科技感玻璃态，增加顶部安全区域 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 15px 30px 15px;  /* 增加底部内边距 */
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* 全息投影效果边框 */
-        .hologram-border {
-            position: relative;
-            background: rgba(10, 15, 30, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px 20px;
-            box-shadow: 
-                0 0 60px rgba(0, 255, 255, 0.1),
-                0 0 120px rgba(0, 150, 255, 0.05),
-                inset 0 0 100px rgba(0, 100, 255, 0.1);
-            border: 1px solid rgba(0, 200, 255, 0.2);
-        }
-        
-        .hologram-border::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 20px;
-            padding: 2px;
-            background: linear-gradient(45deg, 
-                rgba(0, 255, 255, 0.5), 
-                rgba(0, 100, 255, 0.5), 
-                rgba(150, 0, 255, 0.5));
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: hologramGlow 8s linear infinite;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(59,130,246,0.03) 0px, rgba(59,130,246,0.03) 1px, transparent 1px, transparent 5px),
+                repeating-linear-gradient(90deg, rgba(139,92,246,0.03) 0px, rgba(139,92,246,0.03) 1px, transparent 1px, transparent 5px);
             pointer-events: none;
         }
-        
-        @keyframes hologramGlow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-        
-        /* 科技感标题 - 控制下边距防止遮挡下方按钮 */
-        .main-title {
-            text-align: center;
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 5px; /* 减少下边距 */
+
+        .container {
+            max-width: 580px;
+            margin: 0 auto;
             position: relative;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            word-break: keep-all;
+            z-index: 2;
         }
-        
-        .main-title .tech-text {
-            background: linear-gradient(90deg, 
-                #00ffff, 
-                #0080ff, 
-                #a100ff, 
-                #00ffff);
+
+        /* ===== 主标题区域 - 彩虹渐变，字体适中 ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 22px;
+            cursor: pointer;
+            transition: transform 0.1s cubic-bezier(0.2, 1.2, 0.8, 1);
+        }
+        .header:active {
+            transform: scale(0.98);
+        }
+
+        .title-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        /* 主标题 - 字体缩小到合适大小 26px */
+        .header h1 {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(135deg, 
+                #FF3366, #FF6B3D, #FFB347, #FFD700, 
+                #33CC99, #3399FF, #9933FF, #FF3366);
+            background-size: 300% 100%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            background-size: 300% 100%;
-            animation: techTextGlow 6s ease-in-out infinite;
-            text-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.3),
-                0 0 40px rgba(0, 100, 255, 0.2);
-        }
-        
-        @keyframes techTextGlow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
-        .main-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 3px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                #00ffff, 
-                #a100ff, 
-                transparent);
-            filter: blur(1px);
-        }
-        
-        /* 副标题 */
-        .subtitle {
-            text-align: center;
-            font-size: 1rem;
-            color: #a0c8ff;
-            letter-spacing: 2px;
-            margin-top: 8px;
-            margin-bottom: 20px;
-            opacity: 0.9;
-            font-weight: 400;
-        }
-        
-        /* 标签导航 - 大幅增加与标题的间距，使用margin-top确保不被遮挡 */
-        .tabs-nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 35px 0 35px;  /* 显著增加上边距，确保按钮不会被标题悬停效果或装饰线遮挡 */
+            letter-spacing: 1.2px;
+            display: inline-block;
+            padding: 0 8px;
             position: relative;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding: 5px 0 10px 0;  /* 给滚动条留出空间，确保按钮完全可见 */
-            scrollbar-width: thin;
+            z-index: 3;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            animation: rainbowShift 5s ease infinite, titleFloat 2.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 2px rgba(0,255,255,0.2));
         }
         
-        /* 美化滚动条但保留功能性 */
-        .tabs-nav::-webkit-scrollbar {
-            height: 4px;
+        @keyframes rainbowShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
-        .tabs-nav::-webkit-scrollbar-track {
-            background: rgba(0, 20, 40, 0.5);
-            border-radius: 4px;
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-2px); }
+        }
+
+        /* 机械光晕 - 缩小范围 */
+        .title-container::before {
+            content: "";
+            position: absolute;
+            inset: -8px;
+            border-radius: 50px;
+            background: linear-gradient(120deg, #ff3366, #ffb347, #33cc99, #3399ff);
+            filter: blur(14px);
+            opacity: 0.35;
+            z-index: 0;
+            animation: borderGlow 3s linear infinite;
         }
         
-        .tabs-nav::-webkit-scrollbar-thumb {
-            background: #00ffff;
-            border-radius: 4px;
+        @keyframes borderGlow {
+            0% { transform: rotate(0deg) scale(0.98); opacity: 0.3;}
+            50% { opacity: 0.6; }
+            100% { transform: rotate(360deg) scale(1); opacity: 0.3;}
         }
-        
-        .tab-button {
-            flex: 0 0 auto;
-            padding: 14px 24px;
-            background: rgba(0, 20, 40, 0.7);
-            border: none;
-            border-radius: 40px;  /* 圆角胶囊风格更现代 */
-            font-size: 1rem;
+
+        /* 副标题 - 字体缩小 */
+        .header p {
+            font-size: 12px;
             font-weight: 600;
-            color: #a0c8ff;
+            background: rgba(10, 20, 35, 0.85);
+            backdrop-filter: blur(8px);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 18px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            transition: all 0.2s;
+            color: #e2e8ff;
+            letter-spacing: 0.6px;
+            font-family: monospace;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 3px 8px rgba(0,0,0,0.3);
+        }
+        
+        .header p:hover {
+            background: rgba(59, 130, 246, 0.4);
+            border-color: #f0b34b;
+            transform: translateY(-1px);
+        }
+
+        /* 选项卡 — 机械按键风格，字体缩小 */
+        .tab-group {
+            display: flex;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 5px;
+            gap: 8px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 180, 60, 0.4);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 36px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #cbd5e6;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.1s linear;
+            background: rgba(20, 30, 50, 0.7);
+            letter-spacing: 0.3px;
+            font-family: monospace;
+            backdrop-filter: blur(4px);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.3), 0 2px 2px rgba(0,0,0,0.2);
+            border-bottom: 2px solid rgba(255, 100, 0, 0);
+        }
+        .tab:hover {
+            background: rgba(80, 100, 150, 0.8);
+            transform: translateY(-1px);
+            border-bottom: 2px solid #ffaa33;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #2c3e66, #1f2a48);
+            color: #ffdd99;
+            box-shadow: 0 0 8px rgba(255,200,100,0.6), inset 0 1px 0 rgba(255,255,200,0.3);
+            border-bottom: 2px solid #ffaa33;
+            text-shadow: 0 0 2px gold;
+            font-size: 13px;
+        }
+        .tab:active {
+            transform: scale(0.97);
+        }
+
+        /* 卡片网格 - 间距略微缩小 */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        
+        .item {
+            background: rgba(12, 20, 35, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 16px 8px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.15s cubic-bezier(0.2, 0.9, 0.6, 1.2);
+            border: 1px solid rgba(255, 200, 100, 0.3);
             position: relative;
             overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 150, 255, 0.4);
-            box-shadow: 0 0 20px rgba(0, 100, 255, 0.1);
-            white-space: nowrap;
-            font-family: 'Orbitron', monospace;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
         }
         
-        .tab-button::before {
+        .item .icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: inline-block;
+            transition: all 0.1s;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        .item .name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #f0f3fa;
+            letter-spacing: 0.5px;
+            font-family: monospace;
+        }
+        
+        /* 机械扫描特效 */
+        .item::after {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(0, 255, 255, 0.2), 
-                transparent);
-            transition: 0.5s;
-        }
-        
-        .tab-button:hover {
-            transform: translateY(-3px) scale(1.03);
-            color: #00ffff;
-            box-shadow: 
-                0 0 30px rgba(0, 255, 255, 0.3),
-                0 0 60px rgba(0, 100, 255, 0.2);
-            border-color: rgba(0, 255, 255, 0.6);
-        }
-        
-        .tab-button:hover::before {
-            left: 100%;
-        }
-        
-        .tab-button.active {
-            background: linear-gradient(135deg, 
-                rgba(0, 120, 255, 0.9), 
-                rgba(100, 0, 255, 0.9));
-            color: #ffffff;
-            box-shadow: 
-                0 0 25px rgba(0, 200, 255, 0.5),
-                0 0 45px rgba(100, 0, 255, 0.3);
-            border-color: rgba(0, 255, 255, 0.9);
-            text-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-        
-        .tab-icon {
-            margin-right: 6px;
-            font-size: 1.1rem;
-        }
-        
-        /* 内容区域 */
-        .tab-content {
-            display: none;
-            animation: contentFadeIn 0.5s ease;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        @keyframes contentFadeIn {
-            from { 
-                opacity: 0; 
-                transform: translateY(20px) perspective(1000px) rotateX(5deg);
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0) perspective(1000px) rotateX(0);
-            }
-        }
-        
-        /* 分类标题 - 添加光变效果 */
-        .category-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            padding: 15px 20px;
-            background: rgba(0, 20, 40, 0.4);
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(0, 150, 255, 0.2);
-            box-shadow: 
-                inset 0 0 20px rgba(0, 100, 255, 0.1),
-                0 0 20px rgba(0, 255, 255, 0.1);
-        }
-        
-        .category-title::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 8px;
-            height: 100%;
-            background: linear-gradient(to bottom, 
-                #00ffff, 
-                #0080ff, 
-                #a100ff);
-        }
-        
-        .category-title span {
-            background: linear-gradient(90deg, 
-                #00ffff, 
-                #0080ff, 
-                #a100ff, 
-                #00ffff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            background-size: 300% 100%;
-            animation: techTextGlow 6s ease-in-out infinite;
-            text-shadow: 
-                0 0 15px rgba(0, 255, 255, 0.3),
-                0 0 30px rgba(0, 100, 255, 0.2);
-        }
-        
-        /* 内容网格 - 数据面板 */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 24px;
-            perspective: 1000px;
-        }
-        
-        /* 内容卡片 - 未来感数据卡 */
-        .content-card {
-            position: relative;
-            padding: 22px 18px;
-            background: rgba(0, 20, 40, 0.6);
-            border-radius: 16px;
-            text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-            border: 1px solid rgba(0, 150, 255, 0.3);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            transform-style: preserve-3d;
-            display: block;
-            cursor: pointer;
-        }
-        
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, 
-                #00ffff, 
-                #0080ff, 
-                #a100ff);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.5s ease;
-        }
-        
-        .content-card:hover {
-            transform: translateY(-8px) rotateX(5deg);
-            box-shadow: 
-                0 15px 30px rgba(0, 0, 0, 0.4),
-                0 0 25px rgba(0, 200, 255, 0.4);
-            border-color: rgba(0, 255, 255, 0.6);
-            background: rgba(0, 30, 50, 0.7);
-        }
-        
-        .content-card:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .content-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                transparent 30%, 
-                rgba(0, 255, 255, 0.08) 50%, 
-                transparent 70%);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.12), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.4s;
             pointer-events: none;
         }
         
-        .content-card:hover::after {
-            transform: translateX(100%);
+        .item:hover::after {
+            left: 120%;
         }
         
-        .card-content {
-            position: relative;
-            z-index: 2;
+        .item:hover {
+            transform: translateY(-4px) scale(1.01);
+            background: rgba(30, 48, 80, 0.95);
+            border-color: #ffaa44;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 200, 0, 0.5);
         }
         
-        .card-title {
-            font-size: 1.25rem;
+        .item:active {
+            transform: scale(0.97);
+        }
+        
+        .item:hover .icon {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 6px #ffaa44);
+        }
+        
+        /* 分类标题 - 字体缩小 */
+        .cate {
+            font-size: 14px;
             font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
+            color: #ffdd99;
+            margin-bottom: 14px;
+            padding-left: 10px;
+            position: relative;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            letter-spacing: 0.5px;
+            font-family: monospace;
+            text-shadow: 0 1px 1px black;
         }
         
-        .card-icon {
-            font-size: 1.5rem;
+        .cate::before {
+            content: "⚙️";
+            font-size: 14px;
+            filter: drop-shadow(0 0 2px orange);
         }
         
-        .card-desc {
-            font-size: 0.85rem;
-            color: #b0d4ff;
-            line-height: 1.5;
-            opacity: 0.9;
+        .cate-game::before { content: "🎮"; font-size: 14px; }
+        .cate-tool::before { content: "🔧"; font-size: 14px; }
+        .cate-puzzle::before { content: "🧠"; font-size: 14px; }
+        
+        /* 页面切换 */
+        .page {
+            display: none;
         }
         
-        .card-status {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #00ffaa;
-            box-shadow: 0 0 8px #00ffaa;
-            animation: statusPulse 2s infinite;
+        .page.active {
+            display: block;
+            animation: gearEngage 0.28s ease-out;
         }
         
-        @keyframes statusPulse {
-            0%, 100% { 
-                opacity: 0.6; 
-                box-shadow: 0 0 4px #00ffaa;
+        @keyframes gearEngage {
+            0% {
+                opacity: 0;
+                transform: translateY(6px) scale(0.99);
+                filter: blur(1px);
             }
-            50% { 
-                opacity: 1; 
-                box-shadow: 0 0 14px #00ffaa;
-            }
-        }
-        
-        /* 页脚 - 全息终端界面（青蓝渐变文字） */
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 18px 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            background: linear-gradient(90deg, 
-                #00ffff,    
-                #0080ff,    
-                #a100ff,    
-                #00ffff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            background-size: 300% 100%;
-            animation: textGradient 8s linear infinite;
-            background-color: rgba(0, 20, 40, 0.5);
-            border-radius: 12px;
-            border: 1px solid rgba(0, 255, 255, 0.4);
-            box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.15),
-                inset 0 0 15px rgba(0, 100, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(6px);
-        }
-        
-        @keyframes textGradient {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 300% 50%; }
-        }
-        
-        .footer::before {
-            content: '>';
-            position: absolute;
-            left: 20px;
-            color: #00ffff;
-            animation: cursorBlink 1s infinite;
-            text-shadow: 0 0 8px #00ffff;
-            font-weight: bold;
-        }
-        
-        @keyframes cursorBlink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-        
-        .footer::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                #00ffff, 
-                #0080ff, 
-                transparent);
-            filter: blur(1px);
-        }
-        
-        /* 扫描线效果 */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            background: linear-gradient(
-                to bottom,
-                transparent 50%,
-                rgba(0, 255, 0, 0.02) 50%
-            );
-            background-size: 100% 4px;
-            animation: scanlinesMove 20s linear infinite;
-        }
-        
-        @keyframes scanlinesMove {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100%); }
-        }
-        
-        /* ========= 响应式设计：彻底解决移动端按钮遮挡问题 ========= */
-        @media (max-width: 1024px) {
-            .main-title {
-                font-size: 2.4rem;
-                margin-bottom: 5px;
-            }
-            .subtitle {
-                font-size: 0.9rem;
-                margin-bottom: 15px;
-            }
-            .tabs-nav {
-                margin: 30px 0 30px;
-                gap: 12px;
-            }
-            .tab-button {
-                padding: 12px 20px;
-                font-size: 0.9rem;
-            }
-            .content-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-                gap: 20px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 12px 12px 20px 12px;
-            }
-            .hologram-border {
-                padding: 18px 15px;
-            }
-            .main-title {
-                font-size: 2rem;
-                letter-spacing: 2px;
-                margin-bottom: 4px;
-            }
-            .main-title::after {
-                width: 120px;
-                height: 2px;
-                bottom: -6px;
-            }
-            .subtitle {
-                font-size: 0.8rem;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-            /* 关键：增加按钮区域上边距，彻底避免遮盖 */
-            .tabs-nav {
-                margin: 35px 0 25px;
-                gap: 10px;
-                padding: 4px 2px 12px 2px;
-            }
-            .tab-button {
-                padding: 10px 18px;
-                font-size: 0.85rem;
-                border-radius: 36px;
-            }
-            .tab-icon {
-                font-size: 1rem;
-                margin-right: 4px;
-            }
-            .category-title {
-                font-size: 1.5rem;
-                padding: 12px 16px;
-                margin-bottom: 20px;
-            }
-            .content-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .content-card {
-                padding: 18px;
-            }
-            .card-title {
-                font-size: 1.15rem;
-            }
-            .footer {
-                margin-top: 40px;
-                padding: 14px 12px;
-                font-size: 0.75rem;
-            }
-            .footer::before {
-                left: 12px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px 10px 15px 10px;
-            }
-            .hologram-border {
-                padding: 15px 12px;
-                border-radius: 18px;
-            }
-            .main-title {
-                font-size: 1.7rem;
-                letter-spacing: 1px;
-                margin-bottom: 2px;
-            }
-            .main-title .tech-text {
-                display: inline-block;
-            }
-            .main-title::after {
-                width: 100px;
-                bottom: -5px;
-            }
-            .subtitle {
-                font-size: 0.7rem;
-                margin-bottom: 8px;
-                margin-top: 8px;
-            }
-            /* 手机小屏核心: 确保标签按钮组有足够空间展示 */
-            .tabs-nav {
-                margin: 30px 0 22px;
-                gap: 8px;
-                padding-bottom: 12px;
-            }
-            .tab-button {
-                padding: 8px 14px;
-                font-size: 0.8rem;
-                border-radius: 30px;
-            }
-            .tab-icon {
-                margin-right: 3px;
-                font-size: 0.9rem;
-            }
-            .category-title {
-                font-size: 1.3rem;
-                padding: 10px 12px;
-                margin-bottom: 18px;
-            }
-            .category-title span {
-                font-size: 1.2rem;
-            }
-            .content-card {
-                padding: 16px;
-            }
-            .card-title {
-                font-size: 1.05rem;
-                gap: 6px;
-            }
-            .card-icon {
-                font-size: 1.3rem;
-            }
-            .footer {
-                font-size: 0.7rem;
-                padding: 12px 10px;
-                margin-top: 35px;
-            }
-            .footer::before {
-                left: 10px;
-                font-size: 0.8rem;
-            }
-        }
-        
-        @media (max-width: 375px) {
-            .main-title {
-                font-size: 1.5rem;
-            }
-            .subtitle {
-                font-size: 0.65rem;
-                letter-spacing: 1px;
-            }
-            .tabs-nav {
-                margin: 28px 0 18px;
-                gap: 6px;
-            }
-            .tab-button {
-                padding: 6px 12px;
-                font-size: 0.75rem;
-                min-width: auto;
-            }
-            .category-title {
-                font-size: 1.2rem;
-                padding: 8px 10px;
-            }
-            .card-desc {
-                font-size: 0.78rem;
-            }
-        }
-        
-        /* 全息提示框样式 */
-        .hologram-alert {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 20, 40, 0.95);
-            backdrop-filter: blur(16px);
-            padding: 28px 24px;
-            border-radius: 24px;
-            border: 2px solid rgba(0, 255, 255, 0.6);
-            box-shadow: 0 0 60px rgba(0, 255, 255, 0.4), 0 20px 35px rgba(0,0,0,0.5);
-            z-index: 10000;
-            color: #00ffff;
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            min-width: 300px;
-            max-width: 90%;
-            animation: hologramAppear 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-        
-        @keyframes hologramAppear {
-            from { 
-                opacity: 0; 
-                transform: translate(-50%, -50%) scale(0.85);
-                filter: blur(4px);
-            }
-            to { 
-                opacity: 1; 
-                transform: translate(-50%, -50%) scale(1);
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
                 filter: blur(0);
             }
         }
         
-        @keyframes hologramDisappear {
-            from { 
-                opacity: 1; 
-                transform: translate(-50%, -50%) scale(1);
-            }
-            to { 
-                opacity: 0; 
-                transform: translate(-50%, -50%) scale(0.9);
-                filter: blur(2px);
-            }
+        /* 提示文字 - 字体缩小 */
+        .click-hint {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 10px;
+            color: #b9ad70;
+            background: rgba(0, 0, 0, 0.6);
+            display: inline-block;
+            width: auto;
+            padding: 4px 14px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+            letter-spacing: 0.6px;
+            border: 1px solid #ffaa3355;
+            font-family: monospace;
+            pointer-events: none;
+        }
+        
+        .footer-bar {
+            display: flex;
+            justify-content: center;
+            margin-top: 22px;
+        }
+        
+        /* 机械装饰齿轮 */
+        .gear-deco {
+            position: absolute;
+            opacity: 0.18;
+            font-size: 22px;
+            pointer-events: none;
+            animation: spinSlow 20s linear infinite;
+        }
+        @keyframes spinSlow {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
         }
     </style>
-    
-    <!-- 导入科幻字体 -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- 粒子效果库 -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </head>
 <body>
-    <!-- 粒子背景 -->
-    <div id="particles-js"></div>
-    
-    <!-- CRT扫描线效果 -->
-    <div class="scanlines"></div>
-    
-    <!-- 主容器 -->
-    <div class="container">
-        <div class="hologram-border">
-            <!-- 科技感标题 -->
-            <h1 class="main-title">
-                <span class="tech-text">量子空间</span>
-            </h1>
-            <div class="subtitle">
-                <span>⚡ 经典小游戏与实用工具 | 全息交互矩阵 ⚡</span>
-            </div>
-            
-            <!-- 标签导航 - 已显著增加上边距，确保不会被标题装饰遮挡 -->
-            <div class="tabs-nav">
-                <button class="tab-button active" data-tab="tab1">
-                    <span class="tab-icon">🎮</span> 游戏矩阵
-                </button>
-                <button class="tab-button" data-tab="tab2">
-                    <span class="tab-icon">⚙️</span> 工具面板
-                </button>
-                <button class="tab-button" data-tab="tab3">
-                    <span class="tab-icon">🧠</span> 智械核心
-                </button>
-            </div>
-            
-            <!-- 游戏内容页 -->
-            <div class="tab-content active" id="tab1">
-                <div class="category-title">
-                    <span>游戏矩阵</span> | 娱乐系统
-                </div>
-                <div class="content-grid">
-                    <a href="超级俄罗斯.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🔷</span> 俄罗斯方块</h3><p class="card-desc">量子方块游戏，挑战你的空间思维能力</p></div></a>
-                    <a href="连连看.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🍒</span> 视觉匹配</h3><p class="card-desc">增强现实连连看，训练你的模式识别能力</p></div></a>
-                    <a href="星际3战机.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">◼️</span> 闪电出击</h3><p class="card-desc">经典飞机大战，优化你的决策速度</p></div></a>
-                    <a href="跳跃恐龙.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🦕</span> 时空跳跃</h3><p class="card-desc">控制恐龙穿越障碍，测试你的反应时间</p></div></a>
-                    <a href="星际战机.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🚀</span> 星际战机</h3><p class="card-desc">太空射击游戏，体验宇宙战斗的刺激</p></div></a>
-                </div>
-            </div>
-            
-            <!-- 工具内容页 -->
-            <div class="tab-content" id="tab2">
-                <div class="category-title"><span>工具面板</span> | 实用系统</div>
-                <div class="content-grid">
-                    <a href="常用色表.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🎨</span> 色彩光谱</h3><p class="card-desc">常用颜色表，设计师的色彩数据库</p></div></a>
-                    <a href="颜色代码表.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🌈</span> 色码全息</h3><p class="card-desc">完整的颜色代码库，支持多种格式</p></div></a>
-                    <a href="进制转换.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🔢</span> 进制转换器</h3><p class="card-desc">支持二进制、十进制、十六进制转换</p></div></a>
-                    <a href="单位换算.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">📏</span> 量子换算</h3><p class="card-desc">单位换算工具，覆盖所有物理量</p></div></a>
-                    <a href="播放器.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🎵</span> 声波引擎</h3><p class="card-desc">音乐播放器，支持多种音频格式</p></div></a>
-                </div>
-            </div>
-            
-            <!-- 益智内容页 -->
-            <div class="tab-content" id="tab3">
-                <div class="category-title"><span>智械核心</span> | 训练系统</div>
-                <div class="content-grid">
-                    <a href="数独.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">9️⃣</span> 数字矩阵</h3><p class="card-desc">数独游戏，锻炼你的逻辑推理能力</p></div></a>
-                    <a href="24点.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">♠️</span> 24点运算</h3><p class="card-desc">数字运算游戏，挑战你的心算速度</p></div></a>
-                    <a href="连连看.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">🔄</span> 模式识别</h3><p class="card-desc">经典连连看，增强视觉匹配能力</p></div></a>
-                    <a href="推箱子.html" class="content-card"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">📦</span> 空间推演</h3><p class="card-desc">推箱子游戏，训练你的路径规划能力</p></div></a>
-                    <a href=".html" class="content-card dev-module"><div class="card-status"></div><div class="card-content"><h3 class="card-title"><span class="card-icon">⚡</span> 神经训练</h3><p class="card-desc">多种益智游戏，全面提升认知能力</p></div></a>
-                </div>
-            </div>
-            
-            <!-- 页脚 青蓝渐变 -->
-            <div class="footer">
-                <span id="terminal-text">量子空间系统已就绪 | 版本 2.5.0 | 全息界面在线</span>
-            </div>
+<div class="container">
+    <!-- 装饰齿轮 -->
+    <div class="gear-deco" style="top: 3%; left: -12px;">⚙️</div>
+    <div class="gear-deco" style="bottom: 4%; right: -8px; animation-duration: 15s;">🔩</div>
+
+    <!-- 主标题区域 点击切换分类 -->
+    <div class="header" id="clickableTitle">
+        <div class="title-container">
+            <div style="position: absolute; top: -16px; left: -12px; font-size: 16px; opacity:0.5;">⚡</div>
+            <div style="position: absolute; bottom: -10px; right: -16px; font-size: 14px; opacity:0.5;">🔧</div>
+            <h1>🎮 游戏工具合集</h1>
+        </div>
+        <p>⚙️ 机械核心 · 彩虹指令 · 手动切换 ⚙️</p>
+    </div>
+
+    <!-- 选项卡 -->
+    <div class="tab-group" id="tabGroup">
+        <div class="tab active" data-tab="1">🎮 小游戏</div>
+        <div class="tab" data-tab="2">🛠️ 实用工具</div>
+        <div class="tab" data-tab="3">🧩 益智类</div>
+    </div>
+
+    <!-- 页面1：小游戏 -->
+    <div class="page active" id="p1">
+        <div class="cate cate-game">🎮 街机舱 · 经典游戏</div>
+        <div class="grid">
+            <a href="超级俄罗斯.html" class="item"><div class="icon">🧩</div><div class="name">俄罗斯方块</div></a>
+            <a href="连连看.html" class="item"><div class="icon">🍎</div><div class="name">连连看</div></a>
+            <a href="霰弹战机.html" class="item"><div class="icon">🚀</div><div class="name">霰弹战机</div></a>
+            <a href="跳跃恐龙.html" class="item"><div class="icon">🦖</div><div class="name">跳跃恐龙</div></a>
+            <a href="星际战机.html" class="item"><div class="icon">✈️</div><div class="name">星际战机</div></a>
+            <a href="星际3战机.html" class="item"><div class="icon">🛩️</div><div class="name">星际3战机</div></a>
+        </div>
+    </div>
+
+    <!-- 页面2：实用工具 -->
+    <div class="page" id="p2">
+        <div class="cate cate-tool">🔧 机械工坊 · 实用工具箱</div>
+        <div class="grid">
+            <a href="常用色表.html" class="item"><div class="icon">🎨</div><div class="name">常用色表</div></a>
+            <a href="颜色代码表.html" class="item"><div class="icon">🌈</div><div class="name">颜色代码</div></a>
+            <a href="进制转换.html" class="item"><div class="icon">🔢</div><div class="name">进制转换</div></a>
+            <a href="单位换算.html" class="item"><div class="icon">📏</div><div class="name">单位换算</div></a>
+            <a href="播放器.html" class="item"><div class="icon">🎵</div><div class="name">音乐播放器</div></a>
+            <a href="计算器.html" class="item"><div class="icon">⌨️</div><div class="name">计算器</div></a>
+        </div>
+    </div>
+
+    <!-- 页面3：益智类 -->
+    <div class="page" id="p3">
+        <div class="cate cate-puzzle">🧠 智械核心 · 益智闯关</div>
+        <div class="grid">
+            <a href="数独.html" class="item"><div class="icon">📝</div><div class="name">数独闯关</div></a>
+            <a href="24点.html" class="item"><div class="icon">♠️</div><div class="name">24点</div></a>
+            <a href="连连看.html" class="item"><div class="icon">🔗</div><div class="name">连连看</div></a>
+            <a href="推箱子.html" class="item"><div class="icon">📦</div><div class="name">推箱子</div></a>
+            <a href="#" class="item"><div class="icon">🧩</div><div class="name">更多益智</div></a>
+            <a href="#" class="item"><div class="icon">💥</div><div class="name">更多挑战</div></a>
         </div>
     </div>
     
-    <script>
-        // 初始化粒子背景
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof particlesJS !== 'undefined') {
-                particlesJS("particles-js", {
-                    particles: {
-                        number: { value: 70, density: { enable: true, value_area: 900 } },
-                        color: { value: ["#00ffff", "#0080ff", "#a100ff"] },
-                        shape: { type: "circle" },
-                        opacity: { value: 0.5, random: true },
-                        size: { value: 2.5, random: true },
-                        line_linked: {
-                            enable: true,
-                            distance: 130,
-                            color: "#00ffff",
-                            opacity: 0.25,
-                            width: 1
-                        },
-                        move: {
-                            enable: true,
-                            speed: 1.6,
-                            direction: "none",
-                            random: true,
-                            out_mode: "out"
-                        }
-                    },
-                    interactivity: {
-                        detect_on: "canvas",
-                        events: {
-                            onhover: { enable: true, mode: "repulse" },
-                            onclick: { enable: true, mode: "push" }
-                        }
-                    },
-                    retina_detect: true
-                });
+    <div class="footer-bar">
+        <div class="click-hint">⚙️ 点击「彩虹标题」或「机械按键」切换 · 内置机械音效 ⚙️</div>
+    </div>
+</div>
+
+<script>
+    // ======================= 机械质感音效系统 =======================
+    class MechanicalSFX {
+        constructor() {
+            this.audioCtx = null;
+            this.enabled = true;
+            this.initAudio();
+        }
+        
+        initAudio() {
+            try {
+                this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            } catch(e) {
+                console.warn("Web Audio not supported");
+                this.enabled = false;
             }
-            
-            // 终端打字效果
-            const terminalSpan = document.getElementById('terminal-text');
-            if(terminalSpan) {
-                const finalText = terminalSpan.textContent;
-                terminalSpan.textContent = '';
-                let idx = 0;
-                function typeNext() {
-                    if(idx < finalText.length) {
-                        terminalSpan.textContent += finalText.charAt(idx);
-                        idx++;
-                        setTimeout(typeNext, 45);
-                    } else {
-                        setInterval(() => {
-                            terminalSpan.style.opacity = terminalSpan.style.opacity === '0.6' ? '1' : '0.6';
-                        }, 900);
-                    }
-                }
-                setTimeout(typeNext, 400);
+        }
+        
+        ensureContext() {
+            if (!this.audioCtx) {
+                this.initAudio();
             }
-        });
+            if (this.audioCtx && this.audioCtx.state === 'suspended') {
+                this.audioCtx.resume().catch(e=>{});
+            }
+        }
         
-        // 标签切换（修复被遮挡问题已经调整CSS间距）
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                // 清脆提示音（无声音频上下文可选，静默处理但保留效果）
-                const tabId = button.getAttribute('data-tab');
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-                const activePanel = document.getElementById(tabId);
-                if(activePanel) activePanel.classList.add('active');
-                
-                // 轻微滚动确保按钮完全可见（无遮挡体验优化）
-                if(button && window.innerWidth <= 768) {
-                    button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        // 清脆机械按键声
+        playClick() {
+            if (!this.enabled) return;
+            this.ensureContext();
+            if (!this.audioCtx) return;
+            const now = this.audioCtx.currentTime;
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            osc.type = 'square';
+            osc.frequency.value = 880;
+            gain.gain.value = 0.18;
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+            osc.start();
+            osc.stop(now + 0.1);
+            const osc2 = this.audioCtx.createOscillator();
+            const gain2 = this.audioCtx.createGain();
+            osc2.connect(gain2);
+            gain2.connect(this.audioCtx.destination);
+            osc2.type = 'triangle';
+            osc2.frequency.value = 440;
+            gain2.gain.value = 0.06;
+            gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+            osc2.start();
+            osc2.stop(now + 0.08);
+        }
+        
+        // 切换音效（沉重机械拨档）
+        playSwitch() {
+            if (!this.enabled) return;
+            this.ensureContext();
+            if (!this.audioCtx) return;
+            const now = this.audioCtx.currentTime;
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            osc.type = 'sawtooth';
+            osc.frequency.value = 620;
+            gain.gain.value = 0.16;
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+            osc.start();
+            osc.stop(now + 0.16);
+            const oscLow = this.audioCtx.createOscillator();
+            const gainLow = this.audioCtx.createGain();
+            oscLow.connect(gainLow);
+            gainLow.connect(this.audioCtx.destination);
+            oscLow.type = 'sine';
+            oscLow.frequency.value = 180;
+            gainLow.gain.value = 0.08;
+            gainLow.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+            oscLow.start();
+            oscLow.stop(now + 0.1);
+        }
+        
+        // 金属碰撞
+        playHeavyClick() {
+            if (!this.enabled) return;
+            this.ensureContext();
+            if (!this.audioCtx) return;
+            const now = this.audioCtx.currentTime;
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            osc.type = 'square';
+            osc.frequency.value = 520;
+            gain.gain.value = 0.22;
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+            osc.start();
+            osc.stop(now + 0.09);
+            const bufferSize = 4096;
+            const noiseNode = this.audioCtx.createScriptProcessor(bufferSize, 1, 1);
+            noiseNode.onaudioprocess = function(e) {
+                const output = e.outputBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = (Math.random() - 0.5) * 0.06;
                 }
-            });
-        });
-        
-        // 处理开发中的模块
-        document.querySelectorAll('.content-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                const href = card.getAttribute('href');
-                if(href === '.html' || (card.classList && card.classList.contains('dev-module'))) {
-                    e.preventDefault();
-                    const alertDiv = document.createElement('div');
-                    alertDiv.className = 'hologram-alert';
-                    alertDiv.innerHTML = `
-                        <h3 style="margin-bottom: 16px; font-size: 1.4rem;">⚡ 系统提示</h3>
-                        <p style="margin-bottom: 24px; color: #b8e2ff;">量子协议：此模块正在高维开发中，请期待下一次跃迁更新！</p>
-                        <button id="closeHoloAlert" style="
-                            background: linear-gradient(135deg, #00aaff, #0066cc);
-                            border: none;
-                            padding: 10px 28px;
-                            border-radius: 40px;
-                            color: white;
-                            font-family: 'Orbitron', sans-serif;
-                            font-weight: bold;
-                            cursor: pointer;
-                            font-size: 0.9rem;
-                            box-shadow: 0 0 12px #00ccff;
-                        ">确 认</button>
-                    `;
-                    document.body.appendChild(alertDiv);
-                    const closeBtn = document.getElementById('closeHoloAlert');
-                    if(closeBtn) {
-                        closeBtn.addEventListener('click', () => {
-                            alertDiv.style.animation = 'hologramDisappear 0.3s forwards';
-                            setTimeout(() => alertDiv.remove(), 350);
-                        });
-                    }
-                    // 点击背景遮罩关闭
-                    alertDiv.addEventListener('click', (e2) => {
-                        if(e2.target === alertDiv) {
-                            alertDiv.style.animation = 'hologramDisappear 0.3s forwards';
-                            setTimeout(() => alertDiv.remove(), 350);
-                        }
-                    });
-                    return false;
-                }
-                // 正常链接无特殊处理
-            });
-        });
-        
-        // 页面进场动效
-        window.addEventListener('load', () => {
-            document.querySelector('.container').style.opacity = '0';
-            document.querySelector('.container').style.transform = 'translateY(18px)';
+                noiseNode.disconnect();
+            };
+            noiseNode.connect(this.audioCtx.destination);
             setTimeout(() => {
-                document.querySelector('.container').style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                document.querySelector('.container').style.opacity = '1';
-                document.querySelector('.container').style.transform = 'translateY(0)';
-            }, 150);
+                if(noiseNode) noiseNode.disconnect();
+            }, 50);
+        }
+    }
+    
+    const mechSFX = new MechanicalSFX();
+    
+    function enableAudioOnFirstTouch() {
+        if (mechSFX.audioCtx && mechSFX.audioCtx.state === 'suspended') {
+            mechSFX.audioCtx.resume();
+        }
+        document.removeEventListener('touchstart', enableAudioOnFirstTouch);
+        document.removeEventListener('click', enableAudioOnFirstTouch);
+    }
+    document.addEventListener('touchstart', enableAudioOnFirstTouch);
+    document.addEventListener('click', enableAudioOnFirstTouch);
+    
+    // ========== 手动切换核心 ==========
+    function switchToTab(tabId, playSwitchSound = true) {
+        if (playSwitchSound) {
+            mechSFX.playSwitch();
+        }
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('p'+tabId).classList.add('active');
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
+        if (navigator.vibrate) navigator.vibrate(10);
+    }
+    
+    function getCurrentTab() {
+        if(document.getElementById('p1').classList.contains('active')) return 1;
+        if(document.getElementById('p2').classList.contains('active')) return 2;
+        if(document.getElementById('p3').classList.contains('active')) return 3;
+        return 1;
+    }
+    
+    function nextTabManually() {
+        let cur = getCurrentTab();
+        let nxt = cur === 3 ? 1 : cur + 1;
+        switchToTab(nxt, true);
+    }
+    
+    // 重新绑定选项卡事件 (避免重复，使用全新克隆)
+    const tabGroup = document.querySelector('.tab-group');
+    const oldTabs = document.querySelectorAll('.tab');
+    oldTabs.forEach(tab => {
+        const newTab = tab.cloneNode(true);
+        tab.parentNode.replaceChild(newTab, tab);
+        newTab.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const num = parseInt(newTab.getAttribute('data-tab'), 10);
+            mechSFX.playClick();
+            switchToTab(num, false);
         });
-    </script>
+    });
+    
+    // 标题点击切换
+    const titleHeader = document.querySelector('.header');
+    if(titleHeader) {
+        titleHeader.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mechSFX.playHeavyClick();
+            nextTabManually();
+            const h1 = document.querySelector('.header h1');
+            if(h1) {
+                h1.style.transform = 'scale(1.02)';
+                setTimeout(() => { if(h1) h1.style.transform = ''; }, 100);
+            }
+        });
+    }
+    
+    // 副标题点击
+    const subP = document.querySelector('.header p');
+    if(subP) {
+        subP.style.cursor = 'pointer';
+        subP.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mechSFX.playClick();
+            nextTabManually();
+        });
+    }
+    
+    // 所有卡片点击播放金属碰撞
+    const allCards = document.querySelectorAll('.item');
+    allCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            mechSFX.playHeavyClick();
+            if(navigator.vibrate) navigator.vibrate(15);
+            // 涟漪效果
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const ripple = document.createElement('span');
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.backgroundColor = 'rgba(255,200,100,0.5)';
+            ripple.style.width = '0px';
+            ripple.style.height = '0px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.transform = 'translate(-50%, -50%)';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.transition = 'width 0.25s, height 0.25s, opacity 0.3s';
+            card.style.position = 'relative';
+            card.style.overflow = 'hidden';
+            card.appendChild(ripple);
+            setTimeout(() => {
+                ripple.style.width = '140px';
+                ripple.style.height = '140px';
+                ripple.style.opacity = '0';
+            }, 10);
+            setTimeout(() => ripple.remove(), 300);
+        });
+    });
+    
+    // 清除任何可能的自动轮询
+    (function killAutoTimers() {
+        let maxId = setTimeout(() => {}, 0);
+        for(let i=0;i<maxId;i++) {
+            clearInterval(i);
+            clearTimeout(i);
+        }
+        if(window._autoTimer) clearInterval(window._autoTimer);
+    })();
+    
+    window.addEventListener('load', () => {
+        if(!document.querySelector('.page.active')) {
+            document.getElementById('p1').classList.add('active');
+            document.querySelector('.tab[data-tab="1"]').classList.add('active');
+        }
+        console.log("⚙️ 机械音效已加载 | 字体已优化紧凑");
+    });
+</script>
 </body>
 </html>
